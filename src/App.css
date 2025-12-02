@@ -18,3 +18,7 @@
   width: 100%;
   color: #ffffff;
 }
+.ShopHeroSec {
+  background: url(./assets/Images/ShopCategory.jpg) no-repeat center;
+  background-size: cover;
+}

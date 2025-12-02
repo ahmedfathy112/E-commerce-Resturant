@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import logo from "../assets/Images/Logo.png";
 import { MdFavorite, MdShoppingCart } from "react-icons/md";
 import { HiOutlineMenu, HiX } from "react-icons/hi";
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -45,15 +46,15 @@ const NavBar = () => {
 
       {/* Desktop links */}
       <div className="hidden md:flex flex-row justify-center items-center gap-10 text-[#ffffffcc] font-medium text-[24px]">
-        <a href="#" className="NavLink">
+        <Link to={"/"} className="NavLink">
           HOME
-        </a>
+        </Link>
         <a href="#" className="NavLink">
           ABOUT
         </a>
-        <a href="#" className="NavLink">
+        <Link to={"/shop"} className="NavLink">
           SHOP
-        </a>
+        </Link>
         <a href="#" className="NavLink">
           CONTACT
         </a>
@@ -104,20 +105,19 @@ const NavBar = () => {
             </button>
           </div>
 
-          {/* stop click propagation so inner content isn't closing when clicked */}
           <nav
             className="flex flex-col items-center gap-8 text-white text-[20px] w-full max-w-xs"
             onClick={(e) => e.stopPropagation()}
           >
-            <a href="#" onClick={handleClose} className="NavLink">
+            <Link to={"/"} onClick={handleClose} className="NavLink">
               HOME
-            </a>
+            </Link>
             <a href="#" onClick={handleClose} className="NavLink">
               ABOUT
             </a>
-            <a href="#" onClick={handleClose} className="NavLink">
+            <Link to={"/shop"} onClick={handleClose} className="NavLink">
               SHOP
-            </a>
+            </Link>
             <a href="#" onClick={handleClose} className="NavLink">
               CONTACT
             </a>

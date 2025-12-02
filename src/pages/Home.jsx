@@ -167,7 +167,6 @@ const Home = () => {
       <HeroSection />
       <MostSelling />
       <IntroductionVideo />
-      Home
     </div>
   );
 };
