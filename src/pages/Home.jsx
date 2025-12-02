@@ -8,6 +8,7 @@ import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 // import required modules
 import { Pagination, Navigation } from "swiper/modules";
@@ -45,18 +46,21 @@ const MostSelling = () => {
       progressBar.style.width = progress * 100 + "%";
     }
   };
-
-  const handleSwiperInit = (swiper) => {
+  const handleBeforeInit = (swiper) => {
+    swiper.params.navigation = swiper.params.navigation || {};
     swiper.params.navigation.prevEl = prevRef.current;
     swiper.params.navigation.nextEl = nextRef.current;
-    swiper.navigation.init();
-    swiper.navigation.update();
-    handleSlideChange(swiper);
   };
-  const SlidePerView = () => {
-    if (window.innerWidth >= 1024) return 3.5;
-    if (window.innerWidth >= 768) return 2;
-    return 1.5;
+
+  const handleSwiperInit = (swiper) => {
+    // ensure navigation is initialized/updated once refs are attached
+    try {
+      swiper.navigation.init();
+      swiper.navigation.update();
+    } catch (e) {
+      // ignore if already initialized
+    }
+    handleSlideChange(swiper);
   };
 
   return (
@@ -70,6 +74,19 @@ const MostSelling = () => {
         </h2>
       </div>
       <div className="w-full relative flex flex-row justify-center items-center gap-5 flex-wrap !mt-10">
+        {/* Navigation Buttons */}
+        <button
+          ref={prevRef}
+          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-700 hover:bg-gray-800 text-white !p-3 rounded-full transition"
+        >
+          <MdNavigateBefore size={28} />
+        </button>
+        <button
+          ref={nextRef}
+          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-red-600 hover:bg-red-700 text-white !p-3 rounded-full transition"
+        >
+          <MdNavigateNext size={28} />
+        </button>
         <Swiper
           ref={swiperRef}
           breakpoints={{
@@ -82,13 +99,12 @@ const MostSelling = () => {
           pagination={{
             clickable: true,
           }}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
+          navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
+          navigation={true}
           modules={[Pagination, Navigation]}
-          className="mySwiper w-full"
+          className="mySwiper w-full z-auto"
           onSlideChange={handleSlideChange}
+          onBeforeInit={handleBeforeInit}
           onSwiper={handleSwiperInit}
         >
           <SwiperSlide>
@@ -119,19 +135,6 @@ const MostSelling = () => {
             <FoodCard />
           </SwiperSlide>
         </Swiper>
-        {/* Navigation Buttons */}
-        <button
-          ref={prevRef}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-700 hover:bg-gray-800 text-white !p-3 rounded-full transition"
-        >
-          <MdNavigateBefore size={28} />
-        </button>
-        <button
-          ref={nextRef}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-red-600 hover:bg-red-700 text-white !p-3 rounded-full transition"
-        >
-          <MdNavigateNext size={28} />
-        </button>
       </div>
       {/* Progress Bar */}
       <div className="w-full max-w-4xl h-1 bg-gray-600 rounded-full !mt-10 overflow-hidden ">
