@@ -77,13 +77,13 @@ const MostSelling = () => {
         {/* Navigation Buttons */}
         <button
           ref={prevRef}
-          className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-gray-700 hover:bg-gray-800 text-white !p-3 rounded-full transition"
+          className="absolute left-0 top-1/3 -translate-y-1/2 z-10 bg-gray-700 hover:bg-gray-800 text-white !p-3 rounded-full transition"
         >
           <MdNavigateBefore size={28} />
         </button>
         <button
           ref={nextRef}
-          className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-red-600 hover:bg-red-700 text-white !p-3 rounded-full transition"
+          className="absolute right-0 top-1/3 -translate-y-1/2 z-10 bg-red-600 hover:bg-red-700 text-white !p-3 rounded-full transition"
         >
           <MdNavigateNext size={28} />
         </button>

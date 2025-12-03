@@ -13,6 +13,7 @@
   height: 2px;
   background: #ffffff;
   transition: width 0.3s;
+  background: linear-gradient();
 }
 .NavLink:hover::after {
   width: 100%;
