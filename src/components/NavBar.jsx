@@ -121,6 +121,26 @@ const NavBar = () => {
             <a href="#" onClick={handleClose} className="NavLink">
               CONTACT
             </a>
+            <div className="flex items-center gap-3">
+              <div className="hidden max-md:flex flex-row gap-4">
+                <Link
+                  to={"/wishlist"}
+                  className="relative"
+                  onClick={handleClose}
+                >
+                  <p className="absolute -top-2 right-0 bg-red-500 text-white !p-1 text-[15px] rounded-4xl">
+                    5
+                  </p>
+                  <MdFavorite className="text-[50px] cursor-pointer text-white !p-2 rounded-full border-white" />
+                </Link>
+                <Link to={"/cart"} className="relative" onClick={handleClose}>
+                  <p className="absolute -top-2 right-0 bg-red-500 text-white !p-1 text-[15px] rounded-4xl">
+                    3
+                  </p>
+                  <MdShoppingCart className="text-[50px] cursor-pointer text-white !p-2 rounded-full border-white" />
+                </Link>
+              </div>
+            </div>
 
             <div className="w-full border-t border-white/20 mt-6 pt-6 flex flex-row justify-center gap-6">
               <button
