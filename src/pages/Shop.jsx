@@ -1,21 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import CategoryImage from "../assets/Images/ShopCategory.jpg";
 import FoodCard from "../components/FoodCard";
-
-const ShopHeroSection = () => {
-  return (
-    <div className="ShopHeroSec relative w-full h-[50dvh] flex flex-col justify-center align-middle items-center py-10 ">
-      <div className="absolute inset-0 bg-[#0000009f]"></div>
-      <h1 className="text-white text-4xl font-bold z-10">Shop</h1>
-      <div className="flex flex-row gap-2 text-white text-[18px] font-medium mt-4 z-20">
-        <Link to={"/"}>Home</Link>
-        <span>/</span>
-        <Link to={"/shop"}>Shop</Link>
-      </div>
-    </div>
-  );
-};
+import ShopHeroSection from "../components/HeroForSections";
 
 const ShopCategory = () => {
   return (
@@ -28,7 +14,7 @@ const ShopCategory = () => {
           <div className="rounded-full border-4 border-white">
             <img
               src={CategoryImage}
-              className="w-[180px] h-[180px] rounded-full"
+              className="w-[180px] h-[180px] rounded-full max-md:w-[150px] max-md:h-[150px]"
             />
           </div>
           {/* category title */}
@@ -41,7 +27,7 @@ const ShopCategory = () => {
           <div className="rounded-full border-4 border-white">
             <img
               src={CategoryImage}
-              className="w-[180px] h-[180px] rounded-full"
+              className="w-[180px] h-[180px] rounded-full max-md:w-[150px] max-md:h-[150px]"
             />
           </div>
           {/* category title */}
@@ -54,7 +40,7 @@ const ShopCategory = () => {
           <div className="rounded-full border-4 border-white">
             <img
               src={CategoryImage}
-              className="w-[180px] h-[180px] rounded-full"
+              className="w-[180px] h-[180px] rounded-full max-md:w-[150px] max-md:h-[150px]"
             />
           </div>
           {/* category title */}
@@ -67,7 +53,7 @@ const ShopCategory = () => {
           <div className="rounded-full border-4 border-white">
             <img
               src={CategoryImage}
-              className="w-[180px] h-[180px] rounded-full"
+              className="w-[180px] h-[180px] rounded-full max-md:w-[150px] max-md:h-[150px]"
             />
           </div>
           {/* category title */}
@@ -97,7 +83,7 @@ const ShopCards = () => {
 const Shop = () => {
   return (
     <div>
-      <ShopHeroSection />
+      <ShopHeroSection SecondLink={"shop"} />
       <ShopCategory />
       <ShopCards />
       Shop

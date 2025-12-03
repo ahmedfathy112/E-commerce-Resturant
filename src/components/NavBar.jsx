@@ -60,21 +60,21 @@ const NavBar = () => {
         </a>
       </div>
 
-      {/*  mobile menu button */}
+      {/*  Cart menu button */}
       <div className="flex items-center gap-3">
         <div className="hidden md:flex flex-row gap-4">
-          <div className="relative">
+          <Link to={"/wishlist"} className="relative">
             <p className="absolute -top-2 right-0 bg-red-500 text-white !p-1 text-[15px] rounded-4xl">
               5
             </p>
             <MdFavorite className="text-[50px] cursor-pointer text-white !p-2 rounded-full border-white" />
-          </div>
-          <div className="relative">
+          </Link>
+          <Link to={"/cart"} className="relative">
             <p className="absolute -top-2 right-0 bg-red-500 text-white !p-1 text-[15px] rounded-4xl">
               3
             </p>
             <MdShoppingCart className="text-[50px] cursor-pointer text-white !p-2 rounded-full border-white" />
-          </div>
+          </Link>
         </div>
 
         {/* Mobile menu button */}

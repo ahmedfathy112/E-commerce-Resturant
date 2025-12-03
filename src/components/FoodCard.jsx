@@ -4,7 +4,7 @@ import { FaCheckCircle, FaStar } from "react-icons/fa";
 
 const FoodCard = () => {
   return (
-    <div className="w-[381px] h-[510px] flex flex-col rounded-2xl !p-3.5 bg-[#202020c4] max-md:w-[300px] max-md:h-auto">
+    <div className="w-[381px] h-[510px] flex flex-col rounded-2xl !p-3.5 bg-[#202020c4] max-md:w-auto max-md:h-auto">
       <div className="rounded-2xl">
         <img src={burger} className="rounded-2xl" />
       </div>
