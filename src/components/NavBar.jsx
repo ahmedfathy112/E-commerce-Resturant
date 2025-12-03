@@ -55,9 +55,9 @@ const NavBar = () => {
         <Link to={"/shop"} className="NavLink">
           SHOP
         </Link>
-        <a href="#" className="NavLink">
+        <Link to={"/contact"} className="NavLink">
           CONTACT
-        </a>
+        </Link>
       </div>
 
       {/*  Cart menu button */}
@@ -118,9 +118,10 @@ const NavBar = () => {
             <Link to={"/shop"} onClick={handleClose} className="NavLink">
               SHOP
             </Link>
-            <a href="#" onClick={handleClose} className="NavLink">
+            <Link to={"/contact"} onClick={handleClose} className="NavLink">
               CONTACT
-            </a>
+            </Link>
+            {/* cart and wishlist btns */}
             <div className="flex items-center gap-3">
               <div className="hidden max-md:flex flex-row gap-4">
                 <Link
