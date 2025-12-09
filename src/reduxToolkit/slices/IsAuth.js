@@ -50,24 +50,24 @@ const fetchProfileRow = async (id) => {
   }
 };
 
-const upsertProfileRow = async (id, payload = {}) => {
-  try {
-    const row = { id, ...payload };
-    const { data, error } = await supabase
-      .from("profiles")
-      .upsert(row)
-      .select()
-      .single();
-    if (error) {
-      console.error("profiles upsert error:", error);
-      return null;
-    }
-    return data;
-  } catch (err) {
-    console.error("profiles upsert exception:", err);
-    return null;
-  }
-};
+// const upsertProfileRow = async (id, payload = {}) => {
+//   try {
+//     const row = { id, ...payload };
+//     const { data, error } = await supabase
+//       .from("profiles")
+//       .upsert(row)
+//       .select()
+//       .single();
+//     if (error) {
+//       console.error("profiles upsert error:", error);
+//       return null;
+//     }
+//     return data;
+//   } catch (err) {
+//     console.error("profiles upsert exception:", err);
+//     return null;
+//   }
+// };
 
 /*
   Simple auth thunks:
@@ -95,20 +95,6 @@ export const registerUser = createAsyncThunk(
 
       let combined = user;
       // if a session exists we are authenticated and can write to profiles
-      if (user?.id && session?.access_token) {
-        const profile = await upsertProfileRow(user.id, {
-          email,
-          full_name,
-          phone_number,
-          default_address,
-        });
-        combined = profile ? { ...user, profile } : user;
-      } else {
-        // signUp often requires email confirm — profile will be created on login/confirmation
-        console.info(
-          "No active session after signUp. Profile creation deferred until login/confirmation."
-        );
-      }
 
       saveUserToStorage(session?.access_token ?? null, combined);
       return { user: combined, session: session ?? null };
@@ -135,12 +121,7 @@ export const loginUser = createAsyncThunk(
       if (user?.id) {
         // ensure profile exists (create minimal row if missing)
         let profile = await fetchProfileRow(user.id);
-        if (!profile) {
-          profile = await upsertProfileRow(user.id, {
-            email,
-            full_name: user.user_metadata?.full_name ?? null,
-          });
-        }
+
         combined = profile ? { ...user, profile } : user;
       }
 
@@ -173,12 +154,7 @@ export const checkAuth = createAsyncThunk(
       let combined = rawUser;
       if (rawUser?.id) {
         let profile = await fetchProfileRow(rawUser.id);
-        if (!profile) {
-          profile = await upsertProfileRow(rawUser.id, {
-            email: rawUser.email,
-            full_name: rawUser.user_metadata?.full_name ?? null,
-          });
-        }
+
         combined = profile ? { ...rawUser, profile } : rawUser;
       }
 
