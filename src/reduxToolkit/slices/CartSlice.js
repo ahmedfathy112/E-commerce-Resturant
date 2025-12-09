@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import Swal from "sweetalert2";
 
 const STORAGE_KEY = "cartItems_v1";
 
@@ -51,8 +52,18 @@ const cartSlice = createSlice({
 
       if (existing) {
         existing.quantity = (existing.quantity || 1) + addQty;
+        Swal.fire({
+          title: "Added successfully!",
+          icon: "success",
+          draggable: true,
+        });
       } else {
         state.items.push({ product, quantity: addQty });
+        Swal.fire({
+          title: "Added successfully!",
+          icon: "success",
+          draggable: true,
+        });
       }
 
       // recalc totals
@@ -71,9 +82,11 @@ const cartSlice = createSlice({
     removeItemFromCart: (state, action) => {
       const productId =
         action.payload.product?.id ?? action.payload.id ?? action.payload;
+
       const idx = state.items.findIndex(
         (item) => String(item.product?.id) === String(productId)
       );
+
       if (idx !== -1) {
         state.items.splice(idx, 1);
       }
@@ -87,6 +100,11 @@ const cartSlice = createSlice({
         0
       );
 
+      Swal.fire({
+        title: "Deleted successfully!",
+        icon: "success",
+        draggable: true,
+      });
       saveToStorage(state.items);
     },
 
