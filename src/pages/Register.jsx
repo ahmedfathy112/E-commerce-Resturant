@@ -79,7 +79,7 @@ const Register = () => {
       );
       setTimeout(() => navigate("/login"), 1600);
     } catch (err) {
-      setError("Unexpected error. Try again.");
+      setError("Unexpected error. Try again.", err);
     } finally {
       setLoading(false);
     }
