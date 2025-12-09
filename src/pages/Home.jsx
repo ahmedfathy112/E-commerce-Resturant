@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import FoodCard from "../components/FoodCard";
 import VideoIntro from "../assets/Images/ShopCategory.jpg";
+import Loading from "../components/Loading";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
@@ -12,6 +13,8 @@ import "swiper/css/navigation";
 
 // import required modules
 import { Pagination, Navigation } from "swiper/modules";
+import { useDispatch, useSelector } from "react-redux";
+import { GetAllProducts } from "../reduxToolkit/slices/GetAllProducts";
 
 const HeroSection = () => {
   return (
@@ -35,6 +38,15 @@ const HeroSection = () => {
 };
 
 const MostSelling = () => {
+  // redux state for products
+  const { productsData, IsLoading, Errors } = useSelector(
+    (state) => state.Products
+  );
+
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(GetAllProducts());
+  }, [dispatch]);
   const swiperRef = useRef(null);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -73,69 +85,57 @@ const MostSelling = () => {
           Most Selling
         </h2>
       </div>
-      <div className="w-full relative flex flex-row justify-center items-center gap-5 flex-wrap !mt-10">
-        {/* Navigation Buttons */}
-        <button
-          ref={prevRef}
-          className="absolute left-0 top-1/3 -translate-y-1/2 z-10 bg-gray-700 hover:bg-gray-800 text-white !p-3 rounded-full transition"
-        >
-          <MdNavigateBefore size={28} />
-        </button>
-        <button
-          ref={nextRef}
-          className="absolute right-0 top-1/3 -translate-y-1/2 z-10 bg-red-600 hover:bg-red-700 text-white !p-3 rounded-full transition"
-        >
-          <MdNavigateNext size={28} />
-        </button>
-        <Swiper
-          ref={swiperRef}
-          breakpoints={{
-            // <- use breakpoints instead of SlidePerView()
-            1024: { slidesPerView: 3.5 },
-            768: { slidesPerView: 2.5 },
-            0: { slidesPerView: 1 },
-          }}
-          spaceBetween={20}
-          pagination={{
-            clickable: true,
-          }}
-          navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
-          navigation={true}
-          modules={[Pagination, Navigation]}
-          className="mySwiper w-full z-auto"
-          onSlideChange={handleSlideChange}
-          onBeforeInit={handleBeforeInit}
-          onSwiper={handleSwiperInit}
-        >
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-          <SwiperSlide>
-            <FoodCard />
-          </SwiperSlide>
-        </Swiper>
-      </div>
+      {IsLoading ? (
+        <div className="w-full flex justify-center items-center">
+          <Loading message="Loading Products" />
+        </div>
+      ) : (
+        <div className="w-full relative flex flex-row justify-center items-center gap-5 flex-wrap !mt-10">
+          {/* Navigation Buttons */}
+          <button
+            ref={prevRef}
+            className="absolute left-0 top-1/3 -translate-y-1/2 z-10 bg-gray-700 hover:bg-gray-800 text-white !p-3 rounded-full transition"
+          >
+            <MdNavigateBefore size={28} />
+          </button>
+          <button
+            ref={nextRef}
+            className="absolute right-0 top-1/3 -translate-y-1/2 z-10 bg-red-600 hover:bg-red-700 text-white !p-3 rounded-full transition"
+          >
+            <MdNavigateNext size={28} />
+          </button>
+          <Swiper
+            ref={swiperRef}
+            breakpoints={{
+              // <- use breakpoints instead of SlidePerView()
+              1024: { slidesPerView: 3.5 },
+              768: { slidesPerView: 2.5 },
+              0: { slidesPerView: 1 },
+            }}
+            spaceBetween={20}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={{ prevEl: prevRef.current, nextEl: nextRef.current }}
+            navigation={true}
+            modules={[Pagination, Navigation]}
+            className="mySwiper w-full z-auto !py-5"
+            onSlideChange={handleSlideChange}
+            onBeforeInit={handleBeforeInit}
+            onSwiper={handleSwiperInit}
+          >
+            {productsData.map(
+              (product) =>
+                product?.is_most_selling && (
+                  <SwiperSlide key={product.id}>
+                    <FoodCard product={product} />
+                  </SwiperSlide>
+                )
+            )}
+          </Swiper>
+        </div>
+      )}
+
       {/* Progress Bar */}
       <div className="w-full max-w-4xl h-1 bg-gray-600 rounded-full !mt-10 overflow-hidden ">
         <div

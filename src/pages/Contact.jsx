@@ -49,7 +49,7 @@ const Contact = () => {
                 name="name"
                 value={form.name}
                 onChange={handleChange}
-                placeholder="Joe Programming"
+                placeholder="Ahmed Fathy"
                 className="w-full !pl-12 !pr-3 !py-3 rounded-lg bg-transparent border-2 border-white/60 text-white placeholder-white/50 focus:outline-none"
                 required
               />
@@ -65,7 +65,7 @@ const Contact = () => {
                 name="phone"
                 value={form.phone}
                 onChange={handleChange}
-                placeholder="+20 1515 85 8"
+                placeholder="+201 060 733 679"
                 className="w-full !pl-12 !pr-3 !py-3 rounded-lg bg-transparent border-2 border-white/60 text-white placeholder-white/50 focus:outline-none"
                 inputMode="tel"
               />

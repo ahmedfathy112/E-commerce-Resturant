@@ -9,8 +9,15 @@ import Register from "./pages/Register";
 import Cart from "./pages/Cart";
 import Layout from "./components/Layout";
 import WishList from "./pages/WishList";
+import { Fragment, useEffect, useState } from "react";
+import Loading from "./components/Loading";
+import ProductDetails from "./pages/ProductDetails";
+import { Provider } from "react-redux";
+import store from "./reduxToolkit/store/Store";
+import Profile from "./pages/Profile";
 
 function App() {
+  const [loading, setLoading] = useState(false);
   const Routing = createBrowserRouter([
     {
       path: "/",
@@ -33,6 +40,14 @@ function App() {
           element: (
             <>
               <Shop />
+            </>
+          ),
+        },
+        {
+          path: "/shop/:id",
+          element: (
+            <>
+              <ProductDetails />
             </>
           ),
         },
@@ -84,10 +99,30 @@ function App() {
             </>
           ),
         },
+        {
+          path: "/profile",
+          element: (
+            <>
+              <Profile />
+            </>
+          ),
+        },
       ],
     },
   ]);
-  return <RouterProvider router={Routing} />;
+  useEffect(() => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
+  return (
+    <Fragment>
+      <Provider store={store}>
+        {loading ? <Loading /> : <RouterProvider router={Routing} />}
+      </Provider>
+    </Fragment>
+  );
 }
 
 export default App;

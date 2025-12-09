@@ -1,6 +1,7 @@
 import React from "react";
 import ShopHeroSection from "../components/HeroForSections";
 import { Link } from "react-router-dom";
+
 import FoodCard from "../components/FoodCard";
 
 const EmptyWishMessage = () => {
@@ -20,13 +21,18 @@ const EmptyWishMessage = () => {
 };
 
 const WishListCard = () => {
+  const wishListItems = localStorage.getItem("wishListItems");
+  const parsedItems = wishListItems ? JSON.parse(wishListItems) : [];
+
+  console.log(parsedItems);
+  if (parsedItems.length === 0) {
+    <EmptyWishMessage />;
+  }
   return (
     <div className="w-full flex justify-center flex-row flex-wrap max-md:flex-col gap-6 !mt-10 !pb-10">
-      <FoodCard />
-      <FoodCard />
-      <FoodCard />
-      <FoodCard />
-      <FoodCard />
+      {parsedItems.map((item) => (
+        <FoodCard key={item.id} product={item} />
+      ))}
     </div>
   );
 };
@@ -37,7 +43,6 @@ const WishList = () => {
       <ShopHeroSection SecondLink={"wishlist"} />
       {/* <EmptyWishMessage /> */}
       <WishListCard />
-      WishList
     </div>
   );
 };
