@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { supabase } from "../utils/supabase";
+import { useDispatch, useSelector } from "react-redux";
+import { registerUser } from "../reduxToolkit/slices/IsAuth";
 import Loading from "../components/Loading";
 import ShopHeroSection from "../components/HeroForSections";
 import {
@@ -15,6 +16,12 @@ import {
 
 const Register = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { loading: authLoading, error: authError } = useSelector(
+    (state) => state.Auth
+  );
+
   const [form, setForm] = useState({
     full_name: "",
     email: "",
@@ -22,7 +29,7 @@ const Register = () => {
     phone_number: "",
     default_address: "",
   });
-  const [loading, setLoading] = useState(false);
+
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -36,6 +43,7 @@ const Register = () => {
     e.preventDefault();
     setError("");
     setSuccess("");
+
     if (!form.email || !form.password || !form.full_name) {
       setError("Full name, email and password are required.");
       return;
@@ -45,49 +53,24 @@ const Register = () => {
       return;
     }
 
-    setLoading(true);
-    try {
-      const { data, error: signUpError } = await supabase.auth.signUp(
-        { email: form.email, password: form.password },
-        {
-          data: {
-            full_name: form.full_name,
-            phone_number: form.phone_number,
-            default_address: form.default_address,
-          },
-        }
-      );
+    const resultAction = await dispatch(registerUser(form));
 
-      if (signUpError) {
-        setError(signUpError.message || "Registration failed.");
-        setLoading(false);
-        return;
-      }
-
-      const userId = data?.user?.id ?? data?.user?.id;
-      if (userId) {
-        await supabase.from("profiles").upsert({
-          id: userId,
-          full_name: form.full_name,
-          phone_number: form.phone_number,
-          default_address: form.default_address,
-        });
-      }
-
+    if (registerUser.fulfilled.match(resultAction)) {
       setSuccess(
-        "Registration successful. Please check your email to confirm (if required). Redirecting to login..."
+        "Registration successful. Redirecting to login or check your email to confirm..."
       );
       setTimeout(() => navigate("/login"), 1600);
-    } catch (err) {
-      setError("Unexpected error. Try again.", err);
-    } finally {
-      setLoading(false);
+    } else {
+      const errorMessage = resultAction.payload || "Registration failed.";
+      setError(errorMessage);
     }
   };
 
   return (
     <div className="w-full min-h-dvh flex flex-col items-center bg-black/40 !py-10 !px-4">
-      {loading && <Loading message="Creating account..." />}
+      {(authLoading || (authLoading === undefined && false)) && (
+        <Loading message="Creating account..." />
+      )}
       <ShopHeroSection SecondLink={"register"} />
 
       <div className="w-full max-w-md bg-[#111] bg-opacity-90 rounded-2xl !p-8 shadow-xl !mt-8">
@@ -96,9 +79,9 @@ const Register = () => {
           <p className="text-white/60">Sign up and start ordering</p>
         </div>
 
-        {error && (
+        {(error || authError) && (
           <div className="!mb-4 !p-3 bg-red-600/20 border border-red-500 text-red-400 rounded-lg text-sm">
-            {error}
+            {error || authError}
           </div>
         )}
         {success && (
@@ -195,10 +178,10 @@ const Register = () => {
 
           <button
             type="submit"
-            disabled={loading}
+            disabled={authLoading}
             className="w-full bg-red-600 hover:bg-red-700 disabled:bg-red-800 text-white font-semibold !py-3 rounded-lg transition !mt-2"
           >
-            {loading ? "Creating..." : "Register"}
+            {authLoading ? "Creating..." : "Register"}
           </button>
         </form>
 
